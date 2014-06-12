@@ -1,0 +1,9 @@
+{
+  "camelcase": true,
+  "curly": true,
+  "immed": true,
+  "newcap": true,
+  "undef": true,
+  "unused": true,
+  "browser": true
+}

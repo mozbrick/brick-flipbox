@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>flipbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <!-- Importing Web Component's Polyfill -->
+    <script src="bower_components/platform/platform.js"></script>
+
+    <!-- Importing Custom Elemenent -->
+    <link rel="import" href="src/element.html">
+
+    <!-- demo styles -->
+    <style>
+      .demo {
+        border: 1px solid black;
+        width: 320px;
+        height: 480px;
+      }
+      .demo > div:first-child {
+        background: red;
+      }
+      .demo > div:last-child {
+        background: blue;
+      }
+    </style>
+  </head>
+  <body>
+
+    <x-flipbox class="demo">
+      <div>front</div>
+      <div>back</div>
+    </x-flipbox>
+    <select name="direction" id="direction">
+      <option value="right" selected="selected">Right</option>
+      <option value="left">Left</option>
+      <option value="up">Up</option>
+      <option value="down">Down</option>
+    </select>
+    <button id="toggleButton">Toggle</button>
+
+    <script>
+      var toggleButton = document.getElementById("toggleButton");
+      var direction = document.getElementById("direction");
+      var flipbox = document.querySelector("x-flipbox");
+      toggleButton.addEventListener("click", function() {
+        flipbox.toggle();
+      });
+      direction.addEventListener("change", function(e) {
+        flipbox.direction = e.currentTarget.value;
+      });
+    </script>
+
+  </body>
+</html>
