@@ -1,56 +1,57 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>flipbox</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <title>Custom Element Demo</title>
 
-    <!-- Importing Web Component's Polyfill -->
+    <!-- Importing Polyfill -->
     <script src="bower_components/platform/platform.js"></script>
+
+    <!-- Importing X-Storage-Component -->
+    <link rel="import" href="bower_components/x-storage-indexeddb/src/element.html">
 
     <!-- Importing Custom Elemenent -->
     <link rel="import" href="src/element.html">
 
-    <!-- demo styles -->
-    <style>
-      .demo {
-        border: 1px solid black;
-        width: 320px;
-        height: 480px;
-      }
-      .demo > div:first-child {
-        background: red;
-      }
-      .demo > div:last-child {
-        background: blue;
-      }
-    </style>
   </head>
   <body>
 
-    <x-flipbox class="demo">
-      <div>front</div>
-      <div>back</div>
-    </x-flipbox>
-    <select name="direction" id="direction">
-      <option value="right" selected="selected">Right</option>
-      <option value="left">Left</option>
-      <option value="up">Up</option>
-      <option value="down">Down</option>
+    <select id="groupselect">
+      <option value="a">Group A</option>
+      <option value="b">Group B</option>
+      <option value="c">Group C</option>
+      <option value="d">Group D</option>
+      <option value="e">Group E</option>
+      <option value="f">Group F</option>
+      <option value="g">Group G</option>
     </select>
-    <button id="toggleButton">Toggle</button>
+    <hr>
+    <x-storage-indexeddb name="worldcup2014" key="group" id="x-store"></x-storage-indexeddb>
 
+    <form is="x-form" id="x-form" storage="x-store" name="a">
+      <label>
+        Team 1 <input type="text" name="team1_name"> Points: <input type="text" name="team1_points">
+      </label><br>
+      <label>
+        Team 2 <input type="text" name="team2_name"> Points: <input type="text" name="team2_points">
+      </label><br>
+      <label>
+        Team 3 <input type="text" name="team3_name"> Points: <input type="text" name="team3_points">
+      </label><br>
+      <label>
+        Team 4 <input type="text" name="team4_name"> Points: <input type="text" name="team4_points">
+      </label><br>
+      <button type="submit">update</button>
+    </form>
     <script>
-      var toggleButton = document.getElementById("toggleButton");
-      var direction = document.getElementById("direction");
-      var flipbox = document.querySelector("x-flipbox");
-      toggleButton.addEventListener("click", function() {
-        flipbox.toggle();
-      });
-      direction.addEventListener("change", function(e) {
-        flipbox.direction = e.currentTarget.value;
+      var xform = document.querySelector("#x-form");
+      var groupselect = document.querySelector("#groupselect");
+      groupselect.addEventListener("change",function(e){
+        console.log(e);
+        xform.name = e.target.value;
       });
     </script>
-
   </body>
+
 </html>
