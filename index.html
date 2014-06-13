@@ -41,6 +41,7 @@
     <button id="toggleButton">Toggle</button>
 
     <script>
+    window.addEventListener("WebComponentsReady",function(){
       var toggleButton = document.getElementById("toggleButton");
       var direction = document.getElementById("direction");
       var flipbox = document.querySelector("x-flipbox");
@@ -50,6 +51,8 @@
       direction.addEventListener("change", function(e) {
         flipbox.direction = e.currentTarget.value;
       });
+    });
+
     </script>
 
   </body>
