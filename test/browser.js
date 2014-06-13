@@ -28,7 +28,7 @@ window.addEventListener('WebComponentsReady', function() {
   });
 });
 
-describe("the custom element", function(){
+describe("the flipbox element", function(){
 
   it("should be attached to the DOM", function(){
     expect(document.querySelector("x-flipbox")).not.to.be.null;
