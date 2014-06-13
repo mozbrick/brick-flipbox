@@ -120,6 +120,8 @@
         skipTransition(this.firstElementChild, function () {
           self.setAttribute('_anim-direction', val);
         });
+        skipTransition(this.lastElementChild, function () {
+        });
         this.ns._direction = val;
       }
     }
