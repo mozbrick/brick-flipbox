@@ -1,136 +1,129 @@
 (function () {
 
-  var prefix = (function () {
-    var styles = window.getComputedStyle(document.documentElement, ''),
-        pre = (Array.prototype.slice
-          .call(styles)
-          .join('')
-          .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
-        )[1];
-    return {
-      dom: pre == 'ms' ? 'MS' : pre,
-      lowercase: pre,
-      css: '-' + pre + '-',
-      js: pre == 'ms' ? pre : pre[0].toUpperCase() + pre.substr(1)
-    };
-  })();
+  document.webComponentsReady = new Promise(function (resolve, reject) {
+    document.addEventListener('WebComponentsReady', function (){
+      resolve();
+    });
+  });
 
-  var requestFrame = (function(){
-    var raf = window.requestAnimationFrame ||
-              window[prefix.lowercase + 'RequestAnimationFrame'] ||
-              function(fn){ return window.setTimeout(fn, 20); };
-    return function(fn){ return raf(fn); };
-  })();
+  var XFormPrototype = Object.create(HTMLElement.prototype);
 
-  var skipTransition = function(element, fn, bind){
-    var prop = prefix.js + 'TransitionProperty';
-    element.style[prop] = element.style.transitionProperty = 'none';
-    var callback = fn ? fn.call(bind) : null;
-    return requestFrame(function(){
-      requestFrame(function(){
-        element.style[prop] = element.style.transitionProperty = '';
-        if (callback) {
-          requestFrame(callback);
-        }
+  // Lifecycle methods
+  XFormPrototype.createdCallback = function () {
+    var self = this;
+
+    // self.inputs = self.elements;
+    self.inputs = this.querySelectorAll("input, select");
+
+    self.storage = document.getElementById(self.getAttribute("storage"));
+
+    self.settings = {};
+    self.settings.name = this.getAttribute("name") || "x-form";
+    self.settings.autosave = Boolean(self.getAttribute("autosave"));
+    self.settings.key = self.storage.getAttribute("key");
+
+    // populate the form from storage
+    document.webComponentsReady.then(function(){
+      self.populateForm();
+    });
+
+    if (self.hasAttribute("autosave")) {
+      self.addEventListener("change", function(e){
+        self.saveFormData(e.target);
       });
+    }
+
+    self.addEventListener("submit", function(e){
+      e.preventDefault();
+      self.saveFormData();
     });
   };
 
-  var FlipboxPrototype = Object.create(HTMLElement.prototype);
+  XFormPrototype.attachedCallback = function () {
 
-  FlipboxPrototype.createdCallback = function () {
-    this.ns = {};
-    this.flipped = this.hasAttribute("flipped") ? true : false;
-    this.direction = this.getAttribute("direction");
-    // instantiate sides without initial flip animation
-    if (this.firstElementChild) {
-      skipTransition(this.firstElementChild, function () {});
-    }
-    if (this.lastElementChild) {
-      skipTransition(this.lastElementChild, function () {});
-    }
-    // fire an flipend Event when the transition ended.
-    this.firstElementChild.addEventListener("transitionend", function(e) {
-      var flipBox = e.target.parentNode;
-      var event = new Event("flipend");
-      flipBox.dispatchEvent(event);
-      e.stopPropagation();
-    });
   };
 
-  FlipboxPrototype.attributeChangedCallback = function (attr, oldVal, newVal) {
+  XFormPrototype.detachedCallback = function () {
+
+  };
+
+  XFormPrototype.attributeChangedCallback = function (attr, oldVal, newVal) {
     if (attr in attrs) {
       attrs[attr].call(this, oldVal, newVal);
     }
   };
 
   // Custom methods
-  FlipboxPrototype.toggle = function() {
-    this.flipped = !this.flipped;
+  XFormPrototype.saveFormData = function () {
+    var self = this;
+    var data = {};
+    data[self.settings.key] = self.settings.name;
+    for (var i = 0; i < self.inputs.length; i++) {
+      var input = self.inputs[i];
+      var key = input.name;
+      var value = input.value;
+      if (input.type === "checkbox") {
+        value = input.checked;
+      }
+      data[key] = value;
+    }
+    return self.storage.set(data).then(function(name){
+      console.info("x-form:saved formdata", name, data);
+    });
   };
 
-  FlipboxPrototype.showFront = function() {
-    this.flipped = false;
+  XFormPrototype.loadFormData = function() {
+    var self = this;
+    return self.storage.get(self.settings.name).then(function(data){
+      console.info("x-form:loaded:data", data);
+      return data;
+    });
   };
 
-  FlipboxPrototype.showBack = function() {
-    this.flipped = true;
+  XFormPrototype.populateForm = function() {
+    var self = this;
+    var formValuePromise = self.loadFormData();
+    formValuePromise.then(function(formData){
+      for (var i = 0; i < self.inputs.length; i++) {
+        var input = self.inputs[i];
+        var val = formData ? formData[input.name] || "" : "";
+        if (input.type === "checkbox") {
+          input.checked = val;
+        } else {
+          input.value = val;
+        }
+      }
+    });
   };
 
   // Attribute handlers
   var attrs = {
-    // Prevent attributes and properties from going out of sync when
-    // the attribute is manually changed.
-    'flipped': function (oldVal, newVal) {
-      // Set internal value directly to not set the attribute again.
-      this.ns._flipped = newVal;
-    },
-    'direction': function (oldVal, newVal) {
-      // Use the setter to update the _anim-direction as well.
-      this.direction = newVal;
+    'name': function (oldVal, newVal) {
+      // set the internal value directly to not change the attribute again.
+      console.log("name attr change");
+      this.settings.name = newVal;
     }
   };
 
   // Property handlers
-  Object.defineProperties(FlipboxPrototype, {
-
-    'flipped': {
+  Object.defineProperties(XFormPrototype, {
+    "name": {
       get: function() {
-        return this.ns._flipped;
+        return this.settings.name;
       },
       set: function(newVal) {
-        this.ns._flipped = newVal;
-        if (newVal) {
-          this.setAttribute('flipped', newVal);
-        } else {
-          this.removeAttribute('flipped');
-        }
-      }
-    },
-
-    'direction': {
-      get: function() {
-        return this.ns._direction;
-      },
-      set: function(newVal) {
-        // default to left
-        var val = newVal || "left";
-        // set animation direction attribute and skip any transition
-        var self = this;
-        skipTransition(this.firstElementChild, function () {
-          self.setAttribute('_anim-direction', val);
-        });
-        skipTransition(this.lastElementChild, function () {
-        });
-        this.ns._direction = val;
+        console.info("x-form:namechange");
+        this.settings.name = newVal;
+        this.setAttribute("name",newVal);
+        this.populateForm();
       }
     }
-
   });
 
   // Register the element
-  window.XFlipbox = document.registerElement('x-flipbox', {
-    prototype: FlipboxPrototype
+  window.XForm = document.registerElement('x-form', {
+    prototype: XFormPrototype,
+    extends: 'form'
   });
 
 })();
