@@ -1,4 +1,4 @@
-# Brick-Boilerplate
+# x-flipbox
 
 > A [Brick](https://github.com/mozilla/brick/) custom element starter-kit.
 
@@ -30,22 +30,22 @@
 
 Attribute     | Options    | Default     | Description
 ---           | ---        | ---         | ---
-`flipped`     | *boolean*  | `false`     | True if the flipbox is flipped to the back.
-`direction`   | *string*   | `left`      | The flip direction. Can be `left`, `right`, `up` and `down`.
+-`flipped`    | *boolean*  | `false`     | True if the flipbox is flipped to the back.
+-`direction`  | *string*   | `left`      | The flip direction. Can be `left`, `right`, `up` and `down`.
 
 ## Methods
 
 Method        | Parameters   | Returns     | Description
 ---           | ---          | ---         | ---
-`toggle()`    | None.        | Nothing.    | Toggle the flipbox.
-`showFront()` | None.        | Nothing.    | Show the front side.
-`showBack()`  | None.        | Nothing.    | Show the back side.
+-`toggle()`   | None.        | Nothing.    | Toggle the flipbox.
+-`showFront()`| None.        | Nothing.    | Show the front side.
+-`showBack()` | None.        | Nothing.    | Show the back side.
 
 ## Events
 
 Event         | Description
 ---           | ---
-`flipend`     | Triggers when the flip transition ended.
+`onsomething` | Triggers when something happens.
 
 ## Development
 
@@ -67,16 +67,16 @@ To get started:
     $ npm install && bower install
     ```
 
-While developing the component, there is a development server that will watch your files for changes and automatically re-build the styles and re-lint the code.
+While developing your component, there is a development server that will watch your files for changes and automatically re-build your styles and re-lint your code.
 
 To run the development server:
 
 * Run `gulp server`
 * Navigate to `http:localhost:3001`
 
-To simply build and lint the code, run `gulp build`.
+To simply build and lint your code, run `gulp build`.
 
-You can also push the code to GitHub Pages by running `gulp deploy`.
+You can also push your code to GitHub Pages by running `gulp deploy`.
 
 ## License
 

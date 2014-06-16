@@ -12,15 +12,14 @@
   },
   "keywords": [
     "brick",
-    "webcomponent",
-    "flipbox"
+    "webcomponent"
   ],
   "author": "mozilla",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mozilla/brick-boilerplate/issues"
+    "url": "https://github.com/dotch/x-flipbox/issues"
   },
-  "homepage": "https://github.com/mozilla/brick-boilerplate",
+  "homepage": "https://github.com/dotch/x-flipbox",
   "devDependencies": {
     "chai": "^1.9.1",
     "gulp": "^3.7.0",

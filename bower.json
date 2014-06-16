@@ -2,6 +2,9 @@
   "name": "x-flipbox",
   "version": "0.0.0",
   "homepage": "https://github.com/dotch/x-flipbox",
+  "authors": [
+    "mozilla"
+  ],
   "description": "Flips between two content elements with a CSS Animation, similar to flipping a playing card.",
   "main": "src/element.html",
   "keywords": [
