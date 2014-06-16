@@ -1,60 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
   <head>
     <meta charset="UTF-8">
-    <title>Gulp Boilerplate - Home</title>
-    <link rel="stylesheet" href="css/main.css">
-  </head>
-  <body class="home">
-    <div class="container">
-        <div class="sprite-lizard"></div>
-        <h1>Welcome To Gulp Boilerplate</h1>
-        <p>A not-so opinionated static site generator.</p>
-<h2 id="stuff-installed-">Stuff installed:</h2>
-<ul>
-<li><a href="http://gulpjs.com">Gulp.js</a> for automation and compiling.</li>
-<li><a href="http://modernizr.com">Modernizr</a> for keeping browsers in check.</li>
-<li><a href="http://necolas.github.io/normalize.css">Normalize</a> to get your styles going without a heavy framework.</li>
-</ul>
-<h2 id="pre-compiled-languages">Pre-compiled languages</h2>
-<ul>
-<li><a href="http://paularmstrong.github.io/swig">Swig</a> as the official templating language.</li>
-<li><a href="http://sass-lang.com">Sass</a> as the official css pre-processing language.</li>
-<li><a href="http://coffeescript.org">Coffeescript</a> for when you need a break from JavaScript.</li>
-</ul>
-<h2 id="stuff-that-has-to-be-installed">Stuff that has to be installed</h2>
-<ul>
-<li><a href="http://compass-style.org">Compass</a> for sprite building, and other fun stuff with Sass.</li>
-</ul>
-<h2 id="software-used">Software used</h2>
-<ul>
-<li><a href="http://brackets.io">Brackets</a> the official text editor for this repo.</li>
-<li><a href="http://nodejs.org">Node.js</a> because you can&#39;t run Gulp.js without it.</li>
-</ul>
-<h2 id="how-to-use-and-configure">How to use and configure</h2>
-<h3 id="to-run-it">to run it</h3>
-<pre><code class="lang-bash">npm install
-</code></pre>
-<pre><code class="lang-bash">npm gulp
-</code></pre>
-<p>Use files in the <code>dev</code> folder.</p>
-<h3 id="to-deploy">to deploy</h3>
-<ul>
-<li>Create a repo subtree, using <code>git subtree push --prefix build origin gh-pages</code></li>
-<li>Configure the <a href="https://github.com/rowoot/gulp-gh-pages">gulp-gh-pages</a> plugin in the gulpfile to point to the repo.</li>
-<li>Use the task <code>gulp deploy</code>. It will send the contents of the build folder to Githbu pages.</li>
-<li>The URL of the project will be at <code>username.github.io/repo</code>.</li>
-</ul>
-<h2 id="where-to-get-it">Where to get it</h2>
-<ul>
-<li><a href="https://github.com/harrypujols/gulp">Repository</a></li>
-<li><a href="https://github.com/harrypujols/gulp/releases">Download</a></li>
-</ul>
+    <title>flipbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-    </div>
-    <!-- scripts-->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="js/vendor.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Importing Web Component's Polyfill -->
+    <script src="bower_components/platform/platform.js"></script>
+
+    <!-- Importing Custom Elemenent -->
+    <link rel="import" href="src/element.html">
+
+    <!-- Demo styles -->
+    <style>
+      .demo {
+        border: 1px solid black;
+        width: 320px;
+        height: 480px;
+      }
+      .demo > div:first-child {
+        background: red;
+      }
+      .demo > div:last-child {
+        background: blue;
+      }
+    </style>
+  </head>
+  <body>
+
+    <x-flipbox class="demo">
+      <div>front</div>
+      <div>back</div>
+    </x-flipbox>
+    <select name="direction" id="direction">
+      <option value="right" selected="selected">Right</option>
+      <option value="left">Left</option>
+      <option value="up">Up</option>
+      <option value="down">Down</option>
+    </select>
+    <button id="toggleButton">Toggle</button>
+
+    <script>
+    window.addEventListener("WebComponentsReady",function(){
+      var toggleButton = document.getElementById("toggleButton");
+      var direction = document.getElementById("direction");
+      var flipbox = document.querySelector("x-flipbox");
+      toggleButton.addEventListener("click", function() {
+        flipbox.toggle();
+      });
+      direction.addEventListener("change", function(e) {
+        flipbox.direction = e.currentTarget.value;
+      });
+    });
+
+    </script>
+
   </body>
 </html>
