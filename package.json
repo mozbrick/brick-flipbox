@@ -1,6 +1,6 @@
 {
   "name": "brick-flipbox",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Flips between two content elements with a CSS Animation, similar to flipping a playing card.",
   "main": "brick-flipbox.html",
   "scripts": {
