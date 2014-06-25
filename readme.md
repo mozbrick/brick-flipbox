@@ -23,26 +23,34 @@
 3. Start using it:
 
     ```html
-    <brick-flipbox></brick-flipbox>
+    <brick-flipbox>
+      <div>Front</div>
+      <div>Back</div>
+    </brick-flipbox>
     ```
 
 ## Options
 
-Attribute     | Options     | Default      | Description
----           | ---         | ---          | ---
-`foo`         | *string*    | `bar`        | An Attribute.
+Attribute    | Options    | Default     | Description
+---          | ---        | ---         | ---
+`flipped`    | *boolean*  | `false`     | True if the flipbox is flipped to the back.
+`direction`  | *string*   | `right`     | The flip direction. Can be `left`, `right`, `up` and `down`.
 
 ## Methods
 
-Method        | Parameters   | Returns     | Description
----           | ---          | ---         | ---
-`method()`    | None.        | Nothing.    | A method.
+Method       | Parameters   | Returns     | Description
+---          | ---          | ---         | ---
+`toggle()`   | None.        | Nothing.    | Toggle the flipbox.
+`showFront()`| None.        | Nothing.    | Show the front side.
+`showBack()` | None.        | Nothing.    | Show the back side.
 
 ## Events
 
 Event         | Description
 ---           | ---
-`onsomething` | Triggers when something happens.
+`flipend`     | Triggers when the flipping is complete.
+
+triggering `reveal` on one of the elements inside the flipbox, will reveal the corresponding side.
 
 ## Development
 
