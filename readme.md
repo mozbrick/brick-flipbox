@@ -32,7 +32,7 @@
 Attribute     | Options    | Default     | Description
 ---           | ---        | ---         | ---
 -`flipped`    | *boolean*  | `false`     | True if the flipbox is flipped to the back.
--`direction`  | *string*   | `left`      | The flip direction. Can be `left`, `right`, `up` and `down`.
+-`direction`  | *string*   | `right`     | The flip direction. Can be `left`, `right`, `up` and `down`.
 
 ## Methods
 
