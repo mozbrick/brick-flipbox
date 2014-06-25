@@ -62,7 +62,6 @@
     this.direction = direction;
 
     // instantiate sides without initial flip animation
-    console.log(this.firstElementChild);
     if (this.firstElementChild) {
       skipTransition(this.firstElementChild, function () {});
       // fire an flipend Event when the transition ended.
