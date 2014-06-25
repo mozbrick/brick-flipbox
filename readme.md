@@ -1,11 +1,10 @@
-# x-flipbox
+# brick-flipbox
 
-> A [Brick](https://github.com/mozilla/brick/) custom element.
-> Flips between two content elements with a CSS Animation, similar to flipping a playing card.
+> A [Brick](https://github.com/mozilla/brick/) custom element starter-kit.
 
 ## Demo
 
-[Check it live!](http://dotch.github.io/x-flipbox)
+[Check it live!](http://mozbrick.github.io/brick-flipbox)
 
 ## Usage
 
@@ -24,31 +23,26 @@
 3. Start using it:
 
     ```html
-    <x-flipbox></x-flipbox>
+    <brick-flipbox></brick-flipbox>
     ```
 
 ## Options
 
-Attribute     | Options    | Default     | Description
----           | ---        | ---         | ---
--`flipped`    | *boolean*  | `false`     | True if the flipbox is flipped to the back.
--`direction`  | *string*   | `right`     | The flip direction. Can be `left`, `right`, `up` and `down`.
+Attribute     | Options     | Default      | Description
+---           | ---         | ---          | ---
+`foo`         | *string*    | `bar`        | An Attribute.
 
 ## Methods
 
 Method        | Parameters   | Returns     | Description
 ---           | ---          | ---         | ---
--`toggle()`   | None.        | Nothing.    | Toggle the flipbox.
--`showFront()`| None.        | Nothing.    | Show the front side.
--`showBack()` | None.        | Nothing.    | Show the back side.
+`method()`    | None.        | Nothing.    | A method.
 
 ## Events
 
 Event         | Description
 ---           | ---
-`flipend`     | Triggers when the flipping is complete.
-
-triggering `reveal` on one of the elements inside the flipbox, will reveal teh corresponding side.
+`onsomething` | Triggers when something happens.
 
 ## Development
 

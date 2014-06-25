@@ -16,7 +16,7 @@ backFaceTransform($transform){
   transformed($perspective $transform translate3d(0px,0px,1px));
 }
 
-x-flipbox {
+brick-flipbox {
   box-sizing(border-box);
   display: block;
   position: relative;
@@ -31,7 +31,7 @@ x-flipbox {
   transform-style: preserve-3d;
 }
 
-x-flipbox > * {
+brick-flipbox > * {
   display: block;
   position: absolute;
   top: 0;
@@ -50,7 +50,7 @@ x-flipbox > * {
 }
 
 // default styles
-x-flipbox{
+brick-flipbox{
   &{$frontFace}{
     frontFaceTransform(rotateY(0deg));
     z-index: 2; // z-indeces are neccessary for IE9
@@ -77,7 +77,7 @@ x-flipbox{
 }
 
 // flip right
-x-flipbox[flipped]{
+brick-flipbox[flipped]{
   /* Note: adding a dummy style to flipped flipboxes forces Android 4+'s
    * native browser to rerender the flipbox, fixing an issue where the flipping
    * animation wouldn't play normally */
@@ -99,7 +99,7 @@ x-flipbox[flipped]{
 }
 
 // flip left
-x-flipbox[_anim-direction="left"][flipped]{
+brick-flipbox[_anim-direction="left"][flipped]{
   &{$frontFace}{
     frontFaceTransform(rotateY(-180deg));
   }
@@ -110,7 +110,7 @@ x-flipbox[_anim-direction="left"][flipped]{
 }
 
 // flip up
-x-flipbox[_anim-direction="up"][flipped]{
+brick-flipbox[_anim-direction="up"][flipped]{
   &{$frontFace}{
     frontFaceTransform(rotateX(180deg));
   }
@@ -121,7 +121,7 @@ x-flipbox[_anim-direction="up"][flipped]{
 }
 
 // flip down
-x-flipbox[_anim-direction="down"][flipped]{
+brick-flipbox[_anim-direction="down"][flipped]{
   &{$frontFace}{
     frontFaceTransform(rotateX(-180deg));
   }

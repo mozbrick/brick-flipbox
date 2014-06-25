@@ -11,12 +11,12 @@ before(function (done) {
 window.addEventListener('WebComponentsReady', function() {
 
   // Add the HTMLImport for the custom element.
-  document.head.innerHTML += '<link rel="import" id="el" href="/base/src/element.html">';
+  document.head.innerHTML += '<link rel="import" id="el" href="/base/src/brick-flipbox.html">';
 
   document.querySelector('#el').addEventListener('load', function() {
 
     // Create the custom element.
-    var customElement = document.createElement('x-flipbox');
+    var customElement = document.createElement('brick-flipbox');
     // customElement.setAttribute('attribute-value', attrbute);
 
     // Add the custom element to the page.
@@ -28,10 +28,10 @@ window.addEventListener('WebComponentsReady', function() {
   });
 });
 
-describe("the x-flipbox", function(){
+describe("the brick-flipbox", function(){
 
   it("should be attached to the DOM", function(){
-    expect(document.querySelector("x-flipbox")).not.to.be.null;
+    expect(document.querySelector("brick-flipbox")).not.to.be.null;
   });
 
 });

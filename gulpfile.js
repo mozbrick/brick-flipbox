@@ -10,7 +10,7 @@ var karma = require('gulp-karma');
 var stylus = require('gulp-stylus');
 
 var paths = {
-  'main': 'src/x-flipbox.html',
+  'main': 'src/brick-flipbox.html',
   'scripts': 'src/*.js',
   'stylesheets': 'src/*.styl',
   'src': 'src/*',
@@ -28,7 +28,7 @@ gulp.task('lint', function() {
 gulp.task('styles', function() {
   gulp.src(paths.stylesheets)
     .pipe(stylus())
-    .pipe(concat('x-flipbox.css'))
+    .pipe(concat('brick-flipbox.css'))
     .pipe(gulp.dest('src'));
 });
 
