@@ -22,6 +22,24 @@
     return function(fn){ return raf(fn); };
   })();
 
+  function delegate(selector, handler) {
+    return function(e) {
+      var context = this;
+      var target = e.target;
+      var delegateEl = e.currentTarget;
+      var matches = delegateEl.querySelectorAll(selector);
+      for (var el = target; el.parentNode && el !== delegateEl; el = el.parentNode) {
+        for (var i = 0; i < matches.length; i++) {
+          if (matches[i] === el) {
+            // changed to have the element as context.
+            handler.call(el, e);
+            return;
+          }
+        }
+      }
+    };
+  }
+
   var skipTransition = function(element, fn, bind){
     var prop = prefix.js + 'TransitionProperty';
     element.style[prop] = element.style.transitionProperty = 'none';
@@ -36,6 +54,17 @@
     });
   };
 
+  function reveal(e) {
+    var flipBox = e.currentTarget;
+    if (this.parentNode === flipBox) {
+      if (this.parentNode.firstElementChild === this) {
+        flipBox.showFront();
+      }
+      else if (this.parentNode.lastElementChild === this) {
+        flipBox.showBack();
+      }
+    }
+  }
 
   var FlipboxPrototype = Object.create(HTMLElement.prototype);
 
@@ -57,6 +86,9 @@
       flipBox.dispatchEvent(event);
       e.stopPropagation();
     });
+    // reveal a side when reveal a reveal event is triggered on it.
+    var revealEventHandler = delegate("x-flipbox > *", reveal);
+    this.addEventListener("reveal", revealEventHandler);
   };
 
   FlipboxPrototype.attributeChangedCallback = function (attr, oldVal, newVal) {

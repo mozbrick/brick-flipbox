@@ -48,6 +48,8 @@ Event         | Description
 ---           | ---
 `flipend`     | Triggers when the flipping is complete.
 
+triggering `reveal` on one of the elements inside the flipbox, will reveal teh corresponding side.
+
 ## Development
 
 Brick components use [Stylus](http://learnboost.github.com/stylus/) to generate their CSS.
