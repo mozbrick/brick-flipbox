@@ -46,7 +46,7 @@ Method        | Parameters   | Returns     | Description
 
 Event         | Description
 ---           | ---
-`onsomething` | Triggers when something happens.
+`flipend`     | Triggers when the flipping is complete.
 
 ## Development
 
