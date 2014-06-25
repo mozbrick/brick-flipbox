@@ -1,12 +1,12 @@
 {
   "name": "x-flipbox",
-  "version": "0.0.0",
-  "homepage": "https://github.com/dotch/x-flipbox",
+  "version": "0.0.1",
+  "homepage": "https://github.com/mozbrick/x-flipbox",
   "authors": [
     "mozilla"
   ],
   "description": "Flips between two content elements with a CSS Animation, similar to flipping a playing card.",
-  "main": "src/element.html",
+  "main": "src/x-flipbox.html",
   "keywords": [
     "brick",
     "webcomponents"

@@ -1,14 +1,14 @@
 {
   "name": "x-flipbox",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Flips between two content elements with a CSS Animation, similar to flipping a playing card.",
-  "main": "element.html",
+  "main": "x-flipbox.html",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/dotch/x-flipbox.git"
+    "url": "git://github.com/mozbrick/x-flipbox.git"
   },
   "keywords": [
     "brick",
@@ -17,9 +17,9 @@
   "author": "mozilla",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dotch/x-flipbox/issues"
+    "url": "https://github.com/mozbrick/x-flipbox/issues"
   },
-  "homepage": "https://github.com/dotch/x-flipbox",
+  "homepage": "https://github.com/mozbrick/x-flipbox",
   "devDependencies": {
     "chai": "^1.9.1",
     "gulp": "^3.7.0",
