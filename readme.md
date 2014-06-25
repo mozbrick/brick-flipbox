@@ -1,10 +1,11 @@
 # brick-flipbox
 
-> A [Brick](https://github.com/mozilla/brick/) custom element starter-kit.
+> A [Brick](https://github.com/mozilla/brick/) custom element.
+> Flips between two content elements with a CSS Animation, similar to flipping a playing card.
 
 ## Demo
 
-[Check it live!](http://mozbrick.github.io/brick-flipbox)
+[Check it live!](http://dotch.github.io/brick-flipbox)
 
 ## Usage
 
