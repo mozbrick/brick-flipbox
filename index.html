@@ -9,7 +9,7 @@
     <script src="bower_components/platform/platform.js"></script>
 
     <!-- Importing Custom Elemenent -->
-    <link rel="import" href="src/element.html">
+    <link rel="import" href="src/x-flipbox.html">
 
     <!-- Demo styles -->
     <style>
@@ -41,18 +41,17 @@
     <button id="toggleButton">Toggle</button>
 
     <script>
-    window.addEventListener("WebComponentsReady",function(){
-      var toggleButton = document.getElementById("toggleButton");
-      var direction = document.getElementById("direction");
-      var flipbox = document.querySelector("x-flipbox");
-      toggleButton.addEventListener("click", function() {
+    window.addEventListener('WebComponentsReady',function(){
+      var toggleButton = document.getElementById('toggleButton');
+      var direction = document.getElementById('direction');
+      var flipbox = document.querySelector('x-flipbox');
+      toggleButton.addEventListener('click', function() {
         flipbox.toggle();
       });
-      direction.addEventListener("change", function(e) {
+      direction.addEventListener('change', function(e) {
         flipbox.direction = e.currentTarget.value;
       });
     });
-
     </script>
 
   </body>

@@ -1,17 +1,17 @@
 (function () {
 
   var prefix = (function () {
-    var styles = window.getComputedStyle(document.documentElement, ''),
-        pre = (Array.prototype.slice
-          .call(styles)
-          .join('')
-          .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
-        )[1];
+    var styles = window.getComputedStyle(document.documentElement, '');
+    var pre = (Array.prototype.slice
+                .call(styles)
+                .join('')
+                .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+              )[1];
     return {
-      dom: pre == 'ms' ? 'MS' : pre,
+      dom: pre === 'ms' ? 'MS' : pre,
       lowercase: pre,
       css: '-' + pre + '-',
-      js: pre == 'ms' ? pre : pre[0].toUpperCase() + pre.substr(1)
+      js: pre === 'ms' ? pre : pre[0].toUpperCase() + pre.substr(1)
     };
   })();
 
@@ -36,12 +36,13 @@
     });
   };
 
+
   var FlipboxPrototype = Object.create(HTMLElement.prototype);
 
-  FlipboxPrototype.createdCallback = function () {
-    this.ns = {};
-    this.flipped = this.hasAttribute("flipped") ? true : false;
-    this.direction = this.getAttribute("direction");
+  FlipboxPrototype.attachedCallback = function () {
+    // default to right.
+    var direction = this.getAttribute('direction') || 'right';
+    this.direction = direction;
     // instantiate sides without initial flip animation
     if (this.firstElementChild) {
       skipTransition(this.firstElementChild, function () {});
@@ -50,9 +51,9 @@
       skipTransition(this.lastElementChild, function () {});
     }
     // fire an flipend Event when the transition ended.
-    this.firstElementChild.addEventListener("transitionend", function(e) {
+    this.firstElementChild.addEventListener('transitionend', function(e) {
       var flipBox = e.target.parentNode;
-      var event = new Event("flipend");
+      var event = new CustomEvent('flipend', {'bubbles': true});
       flipBox.dispatchEvent(event);
       e.stopPropagation();
     });
@@ -64,42 +65,42 @@
     }
   };
 
-  // Custom methods
-  FlipboxPrototype.toggle = function() {
-    this.flipped = !this.flipped;
-  };
-
-  FlipboxPrototype.showFront = function() {
-    this.flipped = false;
-  };
-
-  FlipboxPrototype.showBack = function() {
-    this.flipped = true;
-  };
-
   // Attribute handlers
   var attrs = {
-    // Prevent attributes and properties from going out of sync when
-    // the attribute is manually changed.
-    'flipped': function (oldVal, newVal) {
-      // Set internal value directly to not set the attribute again.
-      this.ns._flipped = newVal;
-    },
     'direction': function (oldVal, newVal) {
       // Use the setter to update the _anim-direction as well.
       this.direction = newVal;
     }
   };
 
+  // Custom methods
+  FlipboxPrototype.toggle = function() {
+    var newFlippedState = !this.hasAttribute('flipped');
+    if (newFlippedState) {
+      this.setAttribute('flipped','');
+    } else {
+      this.removeAttribute('flipped');
+    }
+  };
+
+  FlipboxPrototype.showFront = function() {
+    this.removeAttribute('flipped');
+  };
+
+  FlipboxPrototype.showBack = function() {
+    this.setAttribute ('flipped','');
+  };
+
+
   // Property handlers
   Object.defineProperties(FlipboxPrototype, {
 
     'flipped': {
+      // The flipped state is only represented in the flipped attribute.
       get: function() {
-        return this.ns._flipped;
+        return this.hasAttribute('flipped');
       },
       set: function(newVal) {
-        this.ns._flipped = newVal;
         if (newVal) {
           this.setAttribute('flipped', newVal);
         } else {
@@ -110,19 +111,19 @@
 
     'direction': {
       get: function() {
-        return this.ns._direction;
+        return this.getAttribute('direction');
       },
       set: function(newVal) {
-        // default to left
-        var val = newVal || "left";
-        // set animation direction attribute and skip any transition
         var self = this;
+        // update the attribute if needed.
+        if (self.setAttribute !== newVal) {
+          self.setAttribute('direction', newVal);
+        }
+        // do skipTransition with bot sides.
         skipTransition(this.firstElementChild, function () {
-          self.setAttribute('_anim-direction', val);
+          self.setAttribute('_anim-direction', newVal);
         });
-        skipTransition(this.lastElementChild, function () {
-        });
-        this.ns._direction = val;
+        skipTransition(this.lastElementChild, function () {});
       }
     }
 
