@@ -22,7 +22,6 @@
     };
   }
 
-  // just prefix for webkit
   var skipTransition = function(element, fn, bind){
     element.style.webkitTransitionProperty = 'none';
     element.style.transitionProperty = 'none';
@@ -60,7 +59,6 @@
     // default to right.
     var direction = this.getAttribute('direction') || 'right';
     this.direction = direction;
-
     // instantiate sides without initial flip animation
     if (this.firstElementChild) {
       skipTransition(this.firstElementChild, function () {});
@@ -111,7 +109,6 @@
     }
   };
 
-
   BrickFlipboxElementPrototype.showFront = function() {
     this.removeAttribute('flipped');
   };
@@ -147,7 +144,8 @@
         if (self.setAttribute !== newVal) {
           self.setAttribute('direction', newVal);
         }
-        // do skipTransition with bot sides if we have sides.
+        // do skipTransition before setting the direction
+        // with bot sides if we have sides.
         if (self.firstElementChild) {
           skipTransition(this.firstElementChild, function () {
             self.setAttribute('_anim-direction', newVal);
