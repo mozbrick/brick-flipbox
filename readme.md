@@ -83,7 +83,3 @@ To run the development server:
 To simply build and lint your code, run `gulp build`.
 
 You can also push your code to GitHub Pages by running `gulp deploy`.
-
-## License
-
-[MIT License](http://opensource.org/licenses/MIT)
