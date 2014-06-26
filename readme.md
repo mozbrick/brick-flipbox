@@ -5,7 +5,7 @@
 
 ## Demo
 
-[Check it live!](http://dotch.github.io/brick-flipbox)
+[Check it live!](http://mozbrick.github.io/brick-flipbox)
 
 ## Usage
 
