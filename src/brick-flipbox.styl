@@ -21,37 +21,32 @@ brick-flipbox {
   display: block;
   position: relative;
 
-  // height: 100%;
-  // width: 100%;
-
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   -ms-transform-style: preserve-3d;
   -o-transform-style: preserve-3d;
   transform-style: preserve-3d;
-}
 
-brick-flipbox > * {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backfaceVisibility(hidden);
-  animated(transform, 0.25s, linear);
+  & > * {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backfaceVisibility(hidden);
+    animated(transform, 0.25s, linear);
 
-  /* DO NOT ERASE THESE TRANSFORM-STYLES; they fix a flickering issue in FFOS*/
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  -ms-transform-style: preserve-3d;
-  -o-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
+    /* DO NOT ERASE THESE TRANSFORM-STYLES; they fix a flickering issue in FFOS*/
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
 
-// default styles
-brick-flipbox{
-  &{$frontFace}{
+  // default styles
+  &{$frontFace} {
     frontFaceTransform(rotateY(0deg));
     z-index: 2; // z-indeces are neccessary for IE9
   }
@@ -61,72 +56,72 @@ brick-flipbox{
     z-index: 1;
   }
 
-  &[_anim-direction="up"], &[_anim-direction="down"]{
+  &[_anim-direction="up"], &[_anim-direction="down"] {
     &{$frontFace} {
       frontFaceTransform(rotateX(0deg));
     }
   }
 
-  &[_anim-direction="up"]{$backFace}{
+  &[_anim-direction="up"]{$backFace} {
     backFaceTransform(rotateX(-180deg));
   }
 
-  &[_anim-direction="down"]{$backFace}{
+  &[_anim-direction="down"]{$backFace} {
     backFaceTransform(rotateX(180deg));
   }
-}
 
-// flip right
-brick-flipbox[flipped]{
-  /* Note: adding a dummy style to flipped flipboxes forces Android 4+'s
-   * native browser to rerender the flipbox, fixing an issue where the flipping
-   * animation wouldn't play normally */
-  &:after{
-    /* DO NOT ERASE THIS :after SELECTOR */
-    content: "";
-    display: none;
+  // flip right
+  &[flipped] {
+    /* Note: adding a dummy style to flipped flipboxes forces Android 4+'s
+     * native browser to rerender the flipbox, fixing an issue where the flipping
+     * animation wouldn't play normally */
+    &:after{
+      /* DO NOT ERASE THIS :after SELECTOR */
+      content: "";
+      display: none;
+    }
+
+    &{$frontFace}{
+      frontFaceTransform(rotateY(180deg));
+      z-index: 1; // z-indeces are neccessary for IE9
+    }
+
+    &{$backFace} {
+      backFaceTransform(rotateY(360deg));
+      z-index: 2;
+    }
   }
 
-  &{$frontFace}{
-    frontFaceTransform(rotateY(180deg));
-    z-index: 1; // z-indeces are neccessary for IE9
+  // flip left
+  &[_anim-direction="left"][flipped]{
+    &{$frontFace}{
+      frontFaceTransform(rotateY(-180deg));
+    }
+
+    &{$backFace} {
+      backFaceTransform(rotateY(0deg));
+    }
   }
 
-  &{$backFace} {
-    backFaceTransform(rotateY(360deg));
-    z-index: 2;
-  }
-}
+  // flip up
+  &[_anim-direction="up"][flipped]{
+    &{$frontFace}{
+      frontFaceTransform(rotateX(180deg));
+    }
 
-// flip left
-brick-flipbox[_anim-direction="left"][flipped]{
-  &{$frontFace}{
-    frontFaceTransform(rotateY(-180deg));
-  }
-
-  &{$backFace} {
-    backFaceTransform(rotateY(0deg));
-  }
-}
-
-// flip up
-brick-flipbox[_anim-direction="up"][flipped]{
-  &{$frontFace}{
-    frontFaceTransform(rotateX(180deg));
+    &{$backFace} {
+      backFaceTransform(rotateX(0deg));
+    }
   }
 
-  &{$backFace} {
-    backFaceTransform(rotateX(0deg));
-  }
-}
+  // flip down
+  &[_anim-direction="down"][flipped]{
+    &{$frontFace}{
+      frontFaceTransform(rotateX(-180deg));
+    }
 
-// flip down
-brick-flipbox[_anim-direction="down"][flipped]{
-  &{$frontFace}{
-    frontFaceTransform(rotateX(-180deg));
-  }
-
-  &{$backFace} {
-    backFaceTransform(rotateX(0deg));
+    &{$backFace} {
+      backFaceTransform(rotateX(0deg));
+    }
   }
 }
