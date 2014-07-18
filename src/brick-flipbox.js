@@ -1,37 +1,17 @@
 (function () {
 
-  var prefix = (function () {
-    var styles = window.getComputedStyle(document.documentElement, '');
-    var pre = (Array.prototype.slice
-                .call(styles)
-                .join('')
-                .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
-              )[1];
-    return {
-      dom: pre === 'ms' ? 'MS' : pre,
-      lowercase: pre,
-      css: '-' + pre + '-',
-      js: pre === 'ms' ? pre : pre[0].toUpperCase() + pre.substr(1)
-    };
-  })();
-
-  var requestFrame = (function(){
-    var raf = window.requestAnimationFrame ||
-              window[prefix.lowercase + 'RequestAnimationFrame'] ||
-              function(fn){ return window.setTimeout(fn, 20); };
-    return function(fn){ return raf(fn); };
-  })();
+  var requestAnimationFrame = window.requestAnimationFrame ||
+                              window.webkitRequestAnimationFrame ||
+                              function (fn) { setTimeout(fn, 16); };
 
   function delegate(selector, handler) {
     return function(e) {
-      var context = this;
       var target = e.target;
       var delegateEl = e.currentTarget;
       var matches = delegateEl.querySelectorAll(selector);
       for (var el = target; el.parentNode && el !== delegateEl; el = el.parentNode) {
         for (var i = 0; i < matches.length; i++) {
           if (matches[i] === el) {
-            // changed to have the element as context.
             handler.call(el, e);
             return;
           }
@@ -41,14 +21,15 @@
   }
 
   var skipTransition = function(element, fn, bind){
-    var prop = prefix.js + 'TransitionProperty';
-    element.style[prop] = element.style.transitionProperty = 'none';
+    element.style.webkitTransitionProperty = 'none';
+    element.style.transitionProperty = 'none';
     var callback = fn ? fn.call(bind) : null;
-    return requestFrame(function(){
-      requestFrame(function(){
-        element.style[prop] = element.style.transitionProperty = '';
+    return requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        element.style.webkitTransitionProperty = '';
+        element.style.transitionProperty = '';
         if (callback) {
-          requestFrame(callback);
+          requestAnimationFrame(callback);
         }
       });
     });
@@ -66,32 +47,43 @@
     }
   }
 
-  var FlipboxPrototype = Object.create(HTMLElement.prototype);
+  var BrickFlipboxElementPrototype = Object.create(HTMLElement.prototype);
 
-  FlipboxPrototype.attachedCallback = function () {
+  BrickFlipboxElementPrototype.attachedCallback = function () {
+    // reveal a side when reveal a reveal event is triggered on it.
+    this.revealEventHandler = delegate("x-flipbox > *", reveal);
+    this.addEventListener("reveal", this.revealEventHandler);
+
     // default to right.
     var direction = this.getAttribute('direction') || 'right';
     this.direction = direction;
     // instantiate sides without initial flip animation
     if (this.firstElementChild) {
       skipTransition(this.firstElementChild, function () {});
+      // fire an flipend Event when the transition ended.
+      // only on the first child do avoid firing twice
+      this.transitionendEventHandler = function(e) {
+        var flipBox = e.target.parentNode;
+        var event = new CustomEvent('flipend', {'bubbles': true});
+        flipBox.dispatchEvent(event);
+        e.stopPropagation();
+      };
+      this.firstElementChild.addEventListener('transitionend', this.transitionendEventHandler);
     }
     if (this.lastElementChild) {
       skipTransition(this.lastElementChild, function () {});
     }
-    // fire an flipend Event when the transition ended.
-    this.firstElementChild.addEventListener('transitionend', function(e) {
-      var flipBox = e.target.parentNode;
-      var event = new CustomEvent('flipend', {'bubbles': true});
-      flipBox.dispatchEvent(event);
-      e.stopPropagation();
-    });
-    // reveal a side when reveal a reveal event is triggered on it.
-    var revealEventHandler = delegate("x-flipbox > *", reveal);
-    this.addEventListener("reveal", revealEventHandler);
   };
 
-  FlipboxPrototype.attributeChangedCallback = function (attr, oldVal, newVal) {
+  BrickFlipboxElementPrototype.detachedCallback = function () {
+    // cleanup event listeners
+    this.removeEventListener('reveal',this.revealEventHandler);
+    if (this.firstElementChild && this.transitionendEventHandler) {
+      this.firstElementChild.removeEventListener('transitionend',this.transitionendEventHandler);
+    }
+  };
+
+  BrickFlipboxElementPrototype.attributeChangedCallback = function (attr, oldVal, newVal) {
     if (attr in attrs) {
       attrs[attr].call(this, oldVal, newVal);
     }
@@ -106,7 +98,7 @@
   };
 
   // Custom methods
-  FlipboxPrototype.toggle = function() {
+  BrickFlipboxElementPrototype.toggle = function() {
     var newFlippedState = !this.hasAttribute('flipped');
     if (newFlippedState) {
       this.setAttribute('flipped','');
@@ -115,17 +107,16 @@
     }
   };
 
-  FlipboxPrototype.showFront = function() {
+  BrickFlipboxElementPrototype.showFront = function() {
     this.removeAttribute('flipped');
   };
 
-  FlipboxPrototype.showBack = function() {
+  BrickFlipboxElementPrototype.showBack = function() {
     this.setAttribute ('flipped','');
   };
 
-
   // Property handlers
-  Object.defineProperties(FlipboxPrototype, {
+  Object.defineProperties(BrickFlipboxElementPrototype, {
 
     'flipped': {
       // The flipped state is only represented in the flipped attribute.
@@ -151,19 +142,24 @@
         if (self.setAttribute !== newVal) {
           self.setAttribute('direction', newVal);
         }
-        // do skipTransition with bot sides.
-        skipTransition(this.firstElementChild, function () {
+        // do skipTransition before setting the direction
+        // with bot sides if we have sides.
+        if (self.firstElementChild) {
+          skipTransition(this.firstElementChild, function () {
+            self.setAttribute('_anim-direction', newVal);
+          });
+          skipTransition(this.lastElementChild, function () {});
+        } else {
           self.setAttribute('_anim-direction', newVal);
-        });
-        skipTransition(this.lastElementChild, function () {});
+        }
       }
     }
 
   });
 
   // Register the element
-  window.XFlipbox = document.registerElement('x-flipbox', {
-    prototype: FlipboxPrototype
+  window.BrickFlipboxElement = document.registerElement('brick-flipbox', {
+    prototype: BrickFlipboxElementPrototype
   });
 
 })();
