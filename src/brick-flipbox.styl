@@ -1,8 +1,8 @@
 @import '../bower_components/brick-common/styles/mixins'
 @import '../bower_components/brick-common/styles/params'
 
-$frontFace = " > *:first-child";
-$backFace = " > *:last-child";
+$frontFace = "::content > *:first-child";
+$backFace = "::content > *:last-child";
 $perspective = perspective(800px)
 
 // use this for any transforms of the original front face to preserve z-index
@@ -16,7 +16,7 @@ backFaceTransform($transform){
   transformed($perspective $transform translate3d(0px,0px,1px));
 }
 
-brick-flipbox {
+:host {
   box-sizing(border-box);
   display: block;
   position: relative;
@@ -27,7 +27,7 @@ brick-flipbox {
   -o-transform-style: preserve-3d;
   transform-style: preserve-3d;
 
-  & > * {
+  & ::content > * {
     display: block;
     position: absolute;
     top: 0;
@@ -57,22 +57,22 @@ brick-flipbox {
     z-index: 1;
   }
 
-  &[_anim-direction="up"], &[_anim-direction="down"] {
+  &([_anim-direction="up"]), &([_anim-direction="down"]) {
     &{$frontFace} {
       frontFaceTransform(rotateX(0deg));
     }
   }
 
-  &[_anim-direction="up"]{$backFace} {
+  &([_anim-direction="up"]){$backFace} {
     backFaceTransform(rotateX(-180deg));
   }
 
-  &[_anim-direction="down"]{$backFace} {
+  &([_anim-direction="down"]){$backFace} {
     backFaceTransform(rotateX(180deg));
   }
 
   // flip right
-  &[flipped] {
+  &([flipped]) {
     /* Note: adding a dummy style to flipped flipboxes forces Android 4+'s
      * native browser to rerender the flipbox, fixing an issue where the flipping
      * animation wouldn't play normally */
@@ -94,7 +94,7 @@ brick-flipbox {
   }
 
   // flip left
-  &[_anim-direction="left"][flipped]{
+  &([_anim-direction="left"][flipped]){
     &{$frontFace}{
       frontFaceTransform(rotateY(-180deg));
     }
@@ -105,7 +105,7 @@ brick-flipbox {
   }
 
   // flip up
-  &[_anim-direction="up"][flipped]{
+  &([_anim-direction="up"][flipped]){
     &{$frontFace}{
       frontFaceTransform(rotateX(180deg));
     }
@@ -116,7 +116,7 @@ brick-flipbox {
   }
 
   // flip down
-  &[_anim-direction="down"][flipped]{
+  &([_anim-direction="down"][flipped]){
     &{$frontFace}{
       frontFaceTransform(rotateX(-180deg));
     }

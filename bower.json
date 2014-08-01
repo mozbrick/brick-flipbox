@@ -6,12 +6,12 @@
     "mozilla"
   ],
   "description": "Flips between two content elements with a CSS Animation, similar to flipping a playing card.",
-  "main": "src/brick-flipbox.html",
+  "main": "dist/brick-flipbox.html",
   "keywords": [
     "brick",
     "webcomponents"
   ],
-  "license": "MIT",
+  "license": "ISC",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -20,7 +20,7 @@
     "tests"
   ],
   "dependencies": {
-    "brick-common": "*",
+    "brick-common": "~0.1.4",
     "platform": "Polymer/platform"
   }
 }

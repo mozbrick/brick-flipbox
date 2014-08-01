@@ -18,7 +18,7 @@
 2. Import Custom Element:
 
     ```html
-    <link rel="import" href="src/brick-flipbox.html">
+    <link rel="import" href="dist/brick-flipbox.html">
     ```
 
 3. Start using it:
