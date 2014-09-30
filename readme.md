@@ -34,8 +34,8 @@
 
 Attribute    | Options    | Default     | Description
 ---          | ---        | ---         | ---
-`flipped`    | *boolean*  | `false`     | True if the flipbox is flipped to the back.
-`direction`  | *string*   | `right`     | The flip direction. Can be `left`, `right`, `up` and `down`.
+`flipped`    | *boolean*  | `false`     | `true` if the flipbox is flipped to the back.
+`direction`  | *string*   | `right`     | The flip direction. Can be `left`, `right`, `up` or `down`.
 
 ## Methods
 
@@ -51,7 +51,7 @@ Event         | Description
 ---           | ---
 `flipend`     | Triggers when the flipping is complete.
 
-triggering `reveal` on one of the elements inside the flipbox, will reveal the corresponding side.
+Triggering `reveal` on one of the elements inside the flipbox will reveal the corresponding side.
 
 ## Development
 
@@ -78,7 +78,7 @@ While developing your component, there is a development server that will watch y
 To run the development server:
 
 * Run `gulp server`
-* Navigate to `http:localhost:3001`
+* Navigate to `http://localhost:3001`
 
 To simply build and lint your code, run `gulp build`.
 
